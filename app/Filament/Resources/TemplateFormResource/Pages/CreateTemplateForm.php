@@ -11,8 +11,6 @@ class CreateTemplateForm extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        // Setelah create, langsung ke halaman edit
-        // supaya user bisa langsung tambah pertanyaan
         return $this->getResource()::getUrl('edit', ['record' => $this->getRecord()]);
     }
 

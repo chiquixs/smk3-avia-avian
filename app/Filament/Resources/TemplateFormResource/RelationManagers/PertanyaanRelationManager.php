@@ -3,12 +3,19 @@
 namespace App\Filament\Resources\TemplateFormResource\RelationManagers;
 
 use App\Models\PertanyaanForm;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\TagsInput;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
 
 class PertanyaanRelationManager extends RelationManager
 {
@@ -16,38 +23,37 @@ class PertanyaanRelationManager extends RelationManager
     protected static ?string $title = 'Daftar Pertanyaan';
     protected static ?string $modelLabel = 'Pertanyaan';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
-            Forms\Components\TextInput::make('urutan')
+        return $schema->components([
+            TextInput::make('urutan')
                 ->label('Urutan')
                 ->numeric()
                 ->required()
                 ->default(fn() => $this->getOwnerRecord()->pertanyaan()->count() + 1)
                 ->columnSpan(1),
 
-            Forms\Components\Select::make('tipe_field')
+            Select::make('tipe_field')
                 ->label('Tipe Field')
                 ->options(PertanyaanForm::TIPE_OPTIONS)
                 ->required()
                 ->live()
                 ->columnSpan(2),
 
-            Forms\Components\TextInput::make('label')
+            TextInput::make('label')
                 ->label('Pertanyaan / Label')
                 ->required()
                 ->maxLength(255)
                 ->columnSpanFull(),
 
-            // Opsi jawaban — hanya muncul jika tipe = dropdown atau checklist
-            Forms\Components\TagsInput::make('opsi_jawaban')
+            TagsInput::make('opsi_jawaban')
                 ->label('Opsi Jawaban')
                 ->placeholder('Ketik opsi lalu tekan Enter')
                 ->helperText('Isi opsi jawaban yang tersedia')
                 ->visible(fn(Get $get) => in_array($get('tipe_field'), ['dropdown', 'checklist']))
                 ->columnSpanFull(),
 
-            Forms\Components\Toggle::make('is_required')
+            Toggle::make('is_required')
                 ->label('Wajib Diisi')
                 ->default(true)
                 ->columnSpan(1),
@@ -60,36 +66,36 @@ class PertanyaanRelationManager extends RelationManager
             ->reorderable('urutan')
             ->defaultSort('urutan')
             ->columns([
-                Tables\Columns\TextColumn::make('urutan')
+                TextColumn::make('urutan')
                     ->label('No.')
                     ->sortable()
                     ->width(50),
 
-                Tables\Columns\TextColumn::make('label')
+                TextColumn::make('label')
                     ->label('Pertanyaan')
                     ->wrap(),
 
-                Tables\Columns\BadgeColumn::make('tipe_field')
+                TextColumn::make('tipe_field')
                     ->label('Tipe')
+                    ->badge()
                     ->formatStateUsing(fn($state) => PertanyaanForm::TIPE_OPTIONS[$state] ?? $state)
-                    ->colors([
-                        'success' => 'yes_no',
-                        'info'    => 'text',
-                        'warning' => ['dropdown', 'checklist'],
-                        'gray'    => ['number', 'date', 'photo', 'rating'],
-                    ]),
+                    ->color(fn($state) => match($state) {
+                        'yes_no'                => 'success',
+                        'text'                  => 'info',
+                        'dropdown', 'checklist' => 'warning',
+                        default                 => 'gray',
+                    }),
 
-                Tables\Columns\IconColumn::make('is_required')
+                IconColumn::make('is_required')
                     ->label('Wajib')
                     ->boolean(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->label('Tambah Pertanyaan'),
+                CreateAction::make()->label('Tambah Pertanyaan'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->emptyStateHeading('Belum ada pertanyaan')
             ->emptyStateDescription('Klik "Tambah Pertanyaan" untuk mulai membuat checklist')

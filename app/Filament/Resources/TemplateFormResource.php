@@ -5,46 +5,71 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TemplateFormResource\Pages;
 use App\Filament\Resources\TemplateFormResource\RelationManagers;
 use App\Models\TemplateForm;
-use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Hidden;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 
 class TemplateFormResource extends Resource
 {
     protected static ?string $model = TemplateForm::class;
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
-    protected static ?string $navigationGroup = 'Monitoring K3';
+
+    // Hapus navigationIcon dan navigationGroup dari sini
+    // Pindahkan ke method getNavigationIcon() dan getNavigationGroup()
+
     protected static ?string $navigationLabel = 'Template Form';
     protected static ?int $navigationSort = 1;
     protected static ?string $modelLabel = 'Template Form';
     protected static ?string $pluralModelLabel = 'Template Form';
 
-    public static function form(Form $form): Form
+    public static function getNavigationIcon(): string
     {
-        return $form->schema([
-            Forms\Components\Section::make('Informasi Template')
+        return 'heroicon-o-clipboard-document-list';
+    }
+
+    public static function getNavigationGroup(): string
+    {
+        return 'Monitoring K3';
+    }
+
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([
+            Section::make('Informasi Template')
                 ->schema([
-                    Forms\Components\TextInput::make('judul')
+                    TextInput::make('judul')
                         ->label('Judul Template')
                         ->required()
                         ->maxLength(255)
                         ->columnSpanFull(),
 
-                    Forms\Components\Textarea::make('deskripsi')
+                    Textarea::make('deskripsi')
                         ->label('Deskripsi')
                         ->rows(3)
                         ->columnSpanFull(),
 
-                    Forms\Components\Select::make('departemen_id')
+                    Select::make('departemen_id')
                         ->label('Departemen')
                         ->relationship('departemen', 'nama_departemen')
                         ->searchable()
                         ->preload()
                         ->placeholder('Semua Departemen'),
 
-                    Forms\Components\Select::make('frekuensi')
+                    Select::make('frekuensi')
                         ->label('Frekuensi')
                         ->options([
                             'harian'     => 'Harian',
@@ -56,10 +81,10 @@ class TemplateFormResource extends Resource
                         ])
                         ->required(),
 
-                    Forms\Components\Hidden::make('dibuat_oleh')
+                    Hidden::make('dibuat_oleh')
                         ->default(fn() => auth()->id()),
 
-                    Forms\Components\Toggle::make('is_active')
+                    Toggle::make('is_active')
                         ->label('Aktif')
                         ->default(true),
                 ]),
@@ -70,21 +95,21 @@ class TemplateFormResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('judul')
+                TextColumn::make('judul')
                     ->label('Judul Template')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('departemen.nama_departemen')
+                TextColumn::make('departemen.nama_departemen')
                     ->label('Departemen')
                     ->placeholder('Semua Departemen')
                     ->badge()
                     ->color('info'),
 
-                Tables\Columns\TextColumn::make('frekuensi')
+                TextColumn::make('frekuensi')
                     ->label('Frekuensi')
                     ->badge()
-                    ->formatStateUsing(fn($state) => match($state) {
+                    ->formatStateUsing(fn($state) => match ($state) {
                         'harian'     => 'Harian',
                         'mingguan'   => 'Mingguan',
                         'bulanan'    => 'Bulanan',
@@ -94,23 +119,23 @@ class TemplateFormResource extends Resource
                         default      => $state,
                     }),
 
-                Tables\Columns\TextColumn::make('pertanyaan_count')
+                TextColumn::make('pertanyaan_count')
                     ->label('Jumlah Pertanyaan')
                     ->counts('pertanyaan')
                     ->badge()
                     ->color('gray'),
 
-                Tables\Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->label('Aktif')
                     ->boolean(),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->dateTime('d M Y')
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('frekuensi')
+                SelectFilter::make('frekuensi')
                     ->options([
                         'harian'     => 'Harian',
                         'mingguan'   => 'Mingguan',
@@ -119,16 +144,16 @@ class TemplateFormResource extends Resource
                         'tahunan'    => 'Tahunan',
                         'insidental' => 'Insidental',
                     ]),
-                Tables\Filters\TernaryFilter::make('is_active')
+                TernaryFilter::make('is_active')
                     ->label('Status Aktif'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
