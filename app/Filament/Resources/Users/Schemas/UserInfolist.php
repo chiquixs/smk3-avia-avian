@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users\Schemas;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
+use Filament\Infolists\Components\ImageEntry;
 
 class UserInfolist
 {
@@ -37,8 +38,12 @@ class UserInfolist
                 TextEntry::make('last_login_at')
                     ->dateTime()
                     ->placeholder('-'),
-                TextEntry::make('avatar')
-                    ->placeholder('-'),
+                ImageEntry::make('avatar')
+                    ->label('Avatar')
+                    ->circular()
+                    ->extraAttributes([
+                        'style' => 'width:80px;height:80px;object-fit:cover;',
+                    ])
             ]);
     }
 }
