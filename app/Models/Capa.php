@@ -9,39 +9,58 @@ class Capa extends Model
     protected $table = 'capa';
 
     protected $fillable = [
-        'source_type',
-        'identifikasi_bahaya_id',
+        'nomor_capa',
+        'sumber',
         'insiden_id',
+        'identifikasi_bahaya_id',
+
         'deskripsi_masalah',
+
         'tindakan_perbaikan',
         'tindakan_pencegahan',
+
         'penanggung_jawab',
         'departemen_id',
+
         'target_selesai',
+        'tanggal_selesai',
+
         'status',
+        'efektivitas',
+
+        'dibuat_oleh',
+        'diverifikasi_oleh',
     ];
 
-    // 🔵 RELASI INSIDEN
-    public function insiden()
+    public function laporanInsiden()
     {
-        return $this->belongsTo(LaporanInsiden::class, 'insiden_id');
+        return $this->belongsTo(
+            LaporanInsiden::class,
+            'insiden_id'
+        );
     }
 
-    // 🔵 RELASI HAZARD
     public function identifikasiBahaya()
     {
-        return $this->belongsTo(IdentifikasiBahaya::class, 'identifikasi_bahaya_id');
+        return $this->belongsTo(
+            IdentifikasiBahaya::class,
+            'identifikasi_bahaya_id'
+        );
     }
 
-    // 🏢 RELASI DEPARTEMEN (FIXED EXPLICIT FK)
-    public function departemen()
-    {
-        return $this->belongsTo(Departemen::class, 'departemen_id');
-    }
-
-    // 👤 PENANGGUNG JAWAB
     public function penanggungJawab()
     {
-        return $this->belongsTo(User::class, 'penanggung_jawab');
+        return $this->belongsTo(
+            User::class,
+            'penanggung_jawab'
+        );
+    }
+
+    public function departemen()
+    {
+        return $this->belongsTo(
+            Departemen::class,
+            'departemen_id'
+        );
     }
 }
