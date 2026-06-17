@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\TemplateFormResource\Pages;
+namespace App\Filament\Resources\TemplateForms\Pages;
 
-use App\Filament\Resources\TemplateFormResource;
+use App\Filament\Resources\TemplateForms\TemplateFormResource;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Auth;
 
 class CreateTemplateForm extends CreateRecord
 {
@@ -16,7 +17,7 @@ class CreateTemplateForm extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['dibuat_oleh'] = auth()->id();
+        $data['dibuat_oleh'] = Auth::id();
         return $data;
     }
 }

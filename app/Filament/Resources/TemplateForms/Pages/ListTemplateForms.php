@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\TemplateFormResource\Pages;
+namespace App\Filament\Resources\TemplateForms\Pages;
 
-use App\Filament\Resources\TemplateFormResource;
+use App\Filament\Resources\TemplateForms\TemplateFormResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 

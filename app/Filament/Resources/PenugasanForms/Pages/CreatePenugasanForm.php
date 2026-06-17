@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\PenugasanFormResource\Pages;
+namespace App\Filament\Resources\PenugasanForms\Pages;
 
-use App\Filament\Resources\PenugasanFormResource;
+use App\Filament\Resources\PenugasanForms\PenugasanFormResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreatePenugasanForm extends CreateRecord

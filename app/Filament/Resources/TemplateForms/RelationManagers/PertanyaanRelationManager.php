@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\TemplateFormResource\RelationManagers;
+namespace App\Filament\Resources\TemplateForms\RelationManagers;
 
 use App\Models\PertanyaanForm;
 use Filament\Resources\RelationManagers\RelationManager;

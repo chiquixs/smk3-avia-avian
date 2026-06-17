@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\PenugasanForms;
 
-use App\Filament\Resources\PenugasanFormResource\Pages;
+use App\Filament\Resources\PenugasanForms\Pages;
 use App\Models\PenugasanForm;
 use Carbon\Carbon;
 use Filament\Resources\Resource;
@@ -17,6 +17,8 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\Action;
+use App\Filament\Resources\PengisianForms\PengisianFormResource;
 
 class PenugasanFormResource extends Resource
 {
@@ -119,12 +121,12 @@ class PenugasanFormResource extends Resource
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn(string $state): string => match($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'submitted' => 'success',
                         'overdue'   => 'danger',
                         default     => 'warning',
                     })
-                    ->formatStateUsing(fn(string $state): string => match($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'pending'   => 'Pending',
                         'submitted' => 'Submitted',
                         'overdue'   => 'Overdue',
@@ -154,6 +156,15 @@ class PenugasanFormResource extends Resource
                     ->relationship('template', 'judul'),
             ])
             ->actions([
+                Action::make('isi_checklist')
+                    ->label('Isi Checklist')
+                    ->icon('heroicon-o-pencil-square')
+                    ->color('success')
+                    ->visible(fn($record) => $record->status === 'pending')
+                    ->url(fn($record) => PengisianFormResource::getUrl(
+                        'isi-checklist',
+                        ['penugasan' => $record->id]
+                    )),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

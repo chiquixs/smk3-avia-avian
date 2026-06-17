@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\TemplateForms;
 
-use App\Filament\Resources\TemplateFormResource\Pages;
-use App\Filament\Resources\TemplateFormResource\RelationManagers;
+use App\Filament\Resources\TemplateForms\Pages;
+use App\Filament\Resources\TemplateForms\RelationManagers;
 use App\Models\TemplateForm;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -22,6 +22,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use Illuminate\Support\Facades\Auth;
 
 class TemplateFormResource extends Resource
 {
@@ -82,7 +83,7 @@ class TemplateFormResource extends Resource
                         ->required(),
 
                     Hidden::make('dibuat_oleh')
-                        ->default(fn() => auth()->id()),
+                        ->default(fn() => Auth::id()),
 
                     Toggle::make('is_active')
                         ->label('Aktif')
