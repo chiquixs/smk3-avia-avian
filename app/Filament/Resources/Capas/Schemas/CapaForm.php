@@ -69,8 +69,12 @@ class CapaForm
 
                 DatePicker::make('tanggal_selesai'),
 
-                Textarea::make('efektivitas')
-                    ->columnSpanFull(),
+                Select::make('efektivitas')
+                    ->options([
+                        'efektif' => 'Efektif',
+                        'tidak_efektif' => 'Tidak Efektif',
+                        'perlu_tindak_lanjut' => 'Perlu Tindak Lanjut',
+                    ]),
 
                 Select::make('insiden_id')
                     ->relationship('laporanInsiden', 'nomor_laporan')

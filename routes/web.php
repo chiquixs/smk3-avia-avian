@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing');
 });
 
 Route::get('/dokumen/{file}/view', function ($file) {
@@ -14,7 +14,6 @@ Route::get('/dokumen/{file}/view', function ($file) {
 
     return response()->file($path);
 })->name('dokumen.view');
-
 
 Route::get('/dokumen/{file}/download', function ($file) {
 
