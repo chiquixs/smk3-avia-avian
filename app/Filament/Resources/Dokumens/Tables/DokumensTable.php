@@ -9,6 +9,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class DokumensTable
 {
@@ -51,6 +52,7 @@ class DokumensTable
                     ->dateTime('d M Y H:i'),
 
             ])
+
             ->filters([
 
                 SelectFilter::make('kategori_id')
@@ -62,10 +64,22 @@ class DokumensTable
                     ->label('Departemen'),
 
             ])
+
             ->recordActions([
+
                 ViewAction::make(),
-                EditAction::make(),
+
+                EditAction::make()
+                    ->visible(fn () =>
+                        in_array(Auth::user()?->role, [
+                            'admin',
+                            'k3_manager',
+                            'k3_officer',
+                        ])
+                    ),
+
             ])
+
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
