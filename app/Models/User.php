@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Departemen::class);
     }
+
+    public function hasRole(array|string $roles): bool
+    {
+        return in_array($this->role, (array) $roles);
+    }
 }
