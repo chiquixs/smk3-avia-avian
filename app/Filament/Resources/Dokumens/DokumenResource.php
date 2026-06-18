@@ -16,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use App\Filament\Resources\Dokumens\RelationManagers\VersiRelationManager;
+use Illuminate\Support\Facades\Auth;
 
 class DokumenResource extends Resource
 {
@@ -70,5 +71,31 @@ class DokumenResource extends Resource
             'view' => ViewDokumen::route('/{record}'),
             'edit' => EditDokumen::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return in_array(Auth::user()?->role, [
+            'admin',
+            'k3_manager',
+            'k3_officer',
+        ]);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return in_array(Auth::user()?->role, [
+            'admin',
+            'k3_manager',
+            'k3_officer',
+        ]);
+    }
+
+    public static function canDelete($record): bool
+    {
+        return in_array(Auth::user()?->role, [
+            'admin',
+            'k3_manager',
+        ]);
     }
 }
