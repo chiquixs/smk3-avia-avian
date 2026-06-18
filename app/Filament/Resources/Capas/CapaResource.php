@@ -18,9 +18,11 @@ use Filament\Tables\Table;
 
 class CapaResource extends Resource
 {
-    protected static ?string $model = Capa::class;
+        protected static ?string $model = Capa::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'SMK3';
 
     protected static ?string $recordTitleAttribute = 'judul';
 
