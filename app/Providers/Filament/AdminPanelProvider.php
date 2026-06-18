@@ -22,6 +22,10 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\MonitoringOverviewWidget;
 use App\Filament\Widgets\SkorKepatuhanChartWidget;
 use App\Filament\Widgets\PenugasanOverdueWidget;
+use App\Filament\Widgets\IncidentByTypeChart;
+use App\Filament\Widgets\IncidentByDepartmentChart;
+use App\Filament\Widgets\IncidentByMonthChart;
+use App\Filament\Widgets\IncidentYearComparisonChart;
 
 
 class AdminPanelProvider extends PanelProvider
@@ -48,6 +52,10 @@ class AdminPanelProvider extends PanelProvider
                 \App\Filament\Widgets\MonitoringOverviewWidget::class,
                 \App\Filament\Widgets\SkorKepatuhanChartWidget::class,
                 \App\Filament\Widgets\PenugasanOverdueWidget::class,
+                \App\Filament\Widgets\IncidentByTypeChart::class,
+                \App\Filament\Widgets\IncidentByDepartmentChart::class,
+                \App\Filament\Widgets\IncidentByMonthChart::class,
+                \App\Filament\Widgets\IncidentYearComparisonChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -67,6 +75,16 @@ class AdminPanelProvider extends PanelProvider
                 MonitoringOverviewWidget::class,
                 SkorKepatuhanChartWidget::class,
                 PenugasanOverdueWidget::class,
+            ])
+            ->widgets([
+                AccountWidget::class,
+                FilamentInfoWidget::class,
+
+                MonitoringOverviewWidget::class,
+                SkorKepatuhanChartWidget::class,
+                PenugasanOverdueWidget::class,
+
+                IncidentByTypeChart::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
