@@ -60,6 +60,14 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->widgets([
+                AccountWidget::class,
+                FilamentInfoWidget::class,
+                CapaStats::class,
+                MonitoringOverviewWidget::class,
+                SkorKepatuhanChartWidget::class,
+                PenugasanOverdueWidget::class,
+            ])
             ->authMiddleware([
                 Authenticate::class,
             ]);

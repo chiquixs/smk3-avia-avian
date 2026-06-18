@@ -22,6 +22,8 @@ class IdentifikasiBahayaResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static string|\UnitEnum|null $navigationGroup = 'SMK3';
+
     protected static ?string $recordTitleAttribute = 'lokasi';
 
     public static function form(Schema $schema): Schema
