@@ -18,6 +18,18 @@ use Filament\Tables\Table;
 
 class LaporanInsidenResource extends Resource
 {
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole([
+            'system_admin',
+            'k3_manager',
+            'k3_officer',
+            'department_head',
+            'employee',
+        ]);
+    }
+
     protected static ?string $model = LaporanInsiden::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

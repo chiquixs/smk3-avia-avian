@@ -18,7 +18,19 @@ use Filament\Tables\Table;
 
 class CapaResource extends Resource
 {
-        protected static ?string $model = Capa::class;
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole([
+            'system_admin',
+            'k3_manager',
+            'k3_officer',
+            'department_head',
+            'employee',
+        ]);
+    }
+
+    protected static ?string $model = Capa::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
