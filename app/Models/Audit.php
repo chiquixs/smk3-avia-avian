@@ -16,7 +16,7 @@ class Audit extends Model
         'frekuensi_audit',
         'tanggal_mulai',
         'tanggal_selesai',
-        'auditor',
+        'auditor_eksternal',
         'auditor_id',
         'departemen_id',
         'lingkup',
