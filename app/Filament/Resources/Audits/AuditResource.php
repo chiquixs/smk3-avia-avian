@@ -68,6 +68,7 @@ class AuditResource extends Resource
     {
         return [
             \App\Filament\Resources\Audits\RelationManagers\ChecklistRelationManager::class,
+            \App\Filament\Resources\Audits\RelationManagers\TemuanRelationManager::class,
         ];
     }
 
