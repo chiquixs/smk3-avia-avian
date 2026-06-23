@@ -2,21 +2,21 @@
 
 namespace App\Filament\Resources\PelatihanK3S\RelationManagers;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 
 class PesertaRelationManager extends RelationManager
 {
@@ -55,6 +55,7 @@ class PesertaRelationManager extends RelationManager
                 FileUpload::make('sertifikat_path')
                     ->label('Sertifikat')
                     ->acceptedFileTypes(['application/pdf'])
+                    ->disk('supabase')
                     ->directory('sertifikat-pelatihan'),
 
             ])
@@ -93,6 +94,12 @@ class PesertaRelationManager extends RelationManager
                     ->placeholder('-')
                     ->sortable(),
 
+                TextColumn::make('sertifikat_path')
+                    ->label('Sertifikat')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state ? 'Tersedia' : 'Belum Ada')
+                    ->color(fn ($state) => $state ? 'success' : 'gray'),
+
             ])
 
             ->filters([
@@ -112,8 +119,26 @@ class PesertaRelationManager extends RelationManager
             ])
 
             ->recordActions([
+
+                Action::make('lihat_sertifikat')
+                    ->label('Lihat')
+                    ->icon('heroicon-o-document-text')
+                    ->color('info')
+                    ->visible(fn ($record) => filled($record->sertifikat_path))
+                    ->url(fn ($record) => env('SUPABASE_PUBLIC_URL') . '/' . $record->sertifikat_path)
+                    ->openUrlInNewTab(),
+
+                Action::make('download_sertifikat')
+                    ->label('Download')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('success')
+                    ->visible(fn ($record) => filled($record->sertifikat_path))
+                    ->url(fn ($record) => env('SUPABASE_PUBLIC_URL') . '/' . $record->sertifikat_path)
+                    ->openUrlInNewTab(),
+
                 EditAction::make(),
                 DeleteAction::make(),
+
             ])
 
             ->toolbarActions([

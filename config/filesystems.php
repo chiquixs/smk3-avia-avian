@@ -53,6 +53,18 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'supabase' => [
+            'driver' => 's3',
+            'key' => env('SUPABASE_KEY'),
+            'secret' => env('SUPABASE_SECRET'),
+            'region' => env('SUPABASE_REGION', 'ap-southeast-2'),
+            'bucket' => env('SUPABASE_BUCKET', 'uploads'),
+            'url' => env('SUPABASE_URL'),
+            'endpoint' => env('SUPABASE_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'throw' => false,
+        ],
+
     ],
 
     /*
