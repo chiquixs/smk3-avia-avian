@@ -26,7 +26,10 @@ use App\Filament\Widgets\IncidentByTypeChart;
 use App\Filament\Widgets\IncidentByDepartmentChart;
 use App\Filament\Widgets\IncidentByMonthChart;
 use App\Filament\Widgets\IncidentYearComparisonChart;
-
+use App\Filament\Widgets\AuditPelatihanStats;
+use App\Filament\Widgets\AuditStatusChart;
+use App\Filament\Widgets\PelatihanByMonthChart;
+use App\Filament\Widgets\TemuanOpenWidget;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -45,17 +48,27 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                \Filament\Widgets\AccountWidget::class,
-                \Filament\Widgets\FilamentInfoWidget::class,
-                \App\Filament\Widgets\MonitoringOverviewWidget::class,
-                \App\Filament\Widgets\SkorKepatuhanChartWidget::class,
-                \App\Filament\Widgets\PenugasanOverdueWidget::class,
-                \App\Filament\Widgets\IncidentByTypeChart::class,
-                \App\Filament\Widgets\IncidentByDepartmentChart::class,
-                \App\Filament\Widgets\IncidentByMonthChart::class,
-                \App\Filament\Widgets\IncidentYearComparisonChart::class,
+                AccountWidget::class,
+                FilamentInfoWidget::class,
+
+                // Widget Orang 2 - Monitoring K3
+                MonitoringOverviewWidget::class,
+                SkorKepatuhanChartWidget::class,
+                PenugasanOverdueWidget::class,
+
+                // Widget Orang 3 - Incident & Hazard
+                CapaStats::class,
+                IncidentByTypeChart::class,
+                IncidentByDepartmentChart::class,
+                IncidentByMonthChart::class,
+                IncidentYearComparisonChart::class,
+
+                // Widget Orang 4 - Audit & Pelatihan
+                AuditPelatihanStats::class,
+                AuditStatusChart::class,
+                PelatihanByMonthChart::class,
+                TemuanOpenWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -67,24 +80,6 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-            ])
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-                CapaStats::class,
-                MonitoringOverviewWidget::class,
-                SkorKepatuhanChartWidget::class,
-                PenugasanOverdueWidget::class,
-            ])
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-
-                MonitoringOverviewWidget::class,
-                SkorKepatuhanChartWidget::class,
-                PenugasanOverdueWidget::class,
-
-                IncidentByTypeChart::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
