@@ -61,6 +61,7 @@ class DokumenForm
                 DatePicker::make('tanggal_review'),
 
                 FileUpload::make('file_path')
+                    ->disk('supabase')
                     ->directory('dokumen')
                     ->acceptedFileTypes([
                         'application/pdf',
